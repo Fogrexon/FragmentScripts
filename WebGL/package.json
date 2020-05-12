@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/main.ts",
+    "init": "eslint --init && tsc --init",
     "build": "tsc src/main.ts"
   },
   "author": "",
@@ -15,6 +16,10 @@
     "@typescript-eslint/parser": "^2.32.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "json-schema": "^0.2.5"
   }
 }
