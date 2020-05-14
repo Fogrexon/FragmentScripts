@@ -1,4 +1,15 @@
 {
+    "settings": {
+        "import/resolver": {
+            "node": {
+              "extensions": [
+                ".js",
+                ".json",
+                ".ts"
+              ]
+            }
+          }
+    },
     "env": {
         "browser": true,
         "es6": true
@@ -19,5 +30,6 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "import/extensions": "off"
     }
 }
