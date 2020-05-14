@@ -72,19 +72,31 @@ window.onload = ():void => {
   const program: WebGLProgram = createProgram(gl, vertex, fragment);
 
 
-  const attLocation: GLint = gl.getAttribLocation(program, 'position');
-  const attStride: number = 3;
+  const attLocations: GLint[] = [];
+  attLocations[0] = gl.getAttribLocation(program, 'position');
+  attLocations[1] = gl.getAttribLocation(program, 'color');
+
+  const attStrides: number[] = [3, 4];
   const triangle: number[] = [
     0.0, 1.0, 0.0,
     1.0, 0.0, 0.0,
     -1.0, 0.0, 0.0,
   ];
+  const colors: number[] = [
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 1.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0,
+  ];
 
-  const vbo: WebGLBuffer = createVBO(gl, triangle);
+  const positionVBO: WebGLBuffer = createVBO(gl, triangle);
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionVBO);
+  gl.enableVertexAttribArray(attLocations[0]);
+  gl.vertexAttribPointer(attLocations[0], attStrides[0], gl.FLOAT, false, 0, 0);
 
-  gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
-  gl.enableVertexAttribArray(attLocation);
-  gl.vertexAttribPointer(attLocation, attStride, gl.FLOAT, false, 0, 0);
+  const colorVBO: WebGLBuffer = createVBO(gl, colors);
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorVBO);
+  gl.enableVertexAttribArray(attLocations[1]);
+  gl.vertexAttribPointer(attLocations[1], attStrides[1], gl.FLOAT, false, 0, 0);
 
   const m: any = MatIV;
 
