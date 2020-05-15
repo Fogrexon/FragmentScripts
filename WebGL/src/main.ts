@@ -1,5 +1,8 @@
 import MatIV from './utils/minMatrix';
+import torus from './utils/torus';
 import shaders from './shader';
+
+
 
 const createShader = (
   gl: WebGLRenderingContext,
@@ -57,14 +60,28 @@ const createVBO = (
   return vbo;
 };
 
+const createIBO = (
+  gl: WebGLRenderingContext,
+  data: number[]
+): WebGLBuffer => {
+  const ibo: WebGLBuffer = <WebGLBuffer>gl.createBuffer();
+
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Int16Array(data), gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+  return ibo;
+}
+
+
+
 window.onload = ():void => {
   const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('cnv');
-  console.log(canvas);
   const gl: WebGLRenderingContext = <WebGLRenderingContext>canvas.getContext('webgl');
 
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
-  gl.clearDepth(1.0);
-  gl.clear(gl.COLOR_BUFFER_BIT || gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.CULL_FACE);
+  gl.enable(gl.DEPTH_TEST);
+  gl.depthFunc(gl.LEQUAL);
 
   const vertex: WebGLShader = createShader(gl, shaders.vertex, 'vertex');
   const fragment: WebGLShader = createShader(gl, shaders.fragment, 'fragment');
@@ -74,47 +91,85 @@ window.onload = ():void => {
 
   const attLocations: GLint[] = [];
   attLocations[0] = gl.getAttribLocation(program, 'position');
-  attLocations[1] = gl.getAttribLocation(program, 'color');
+  attLocations[1] = gl.getAttribLocation(program, 'normal');
+  attLocations[2] = gl.getAttribLocation(program, 'color');
 
-  const attStrides: number[] = [3, 4];
-  const triangle: number[] = [
-    0.0, 1.0, 0.0,
-    1.0, 0.0, 0.0,
-    -1.0, 0.0, 0.0,
-  ];
-  const colors: number[] = [
-    1.0, 0.0, 0.0, 1.0,
-    0.0, 1.0, 0.0, 1.0,
-    0.0, 0.0, 1.0, 1.0,
-  ];
+  const torusObj: Array<number>[] = torus(100, 100, 1, 2);
+
+  const attStrides: number[] = [3, 3, 4];
+  const triangle: number[] = torusObj[0];
+  const normals: number[] = torusObj[1];
+  const colors: number[] = torusObj[2];
+  const indexes: number[] = torusObj[3];
 
   const positionVBO: WebGLBuffer = createVBO(gl, triangle);
   gl.bindBuffer(gl.ARRAY_BUFFER, positionVBO);
   gl.enableVertexAttribArray(attLocations[0]);
   gl.vertexAttribPointer(attLocations[0], attStrides[0], gl.FLOAT, false, 0, 0);
 
-  const colorVBO: WebGLBuffer = createVBO(gl, colors);
-  gl.bindBuffer(gl.ARRAY_BUFFER, colorVBO);
+  const normalVBO: WebGLBuffer = createVBO(gl, normals);
+  gl.bindBuffer(gl.ARRAY_BUFFER, normalVBO);
   gl.enableVertexAttribArray(attLocations[1]);
   gl.vertexAttribPointer(attLocations[1], attStrides[1], gl.FLOAT, false, 0, 0);
 
+  const colorVBO: WebGLBuffer = createVBO(gl, colors);
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorVBO);
+  gl.enableVertexAttribArray(attLocations[2]);
+  gl.vertexAttribPointer(attLocations[2], attStrides[2], gl.FLOAT, false, 0, 0);
+
+  const ibo: WebGLBuffer = createIBO(gl, indexes);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+
   const m: any = MatIV;
 
-  const mMatrix: any = m.identity(m.create());
-  const vMatrix: any = m.identity(m.create());
-  const pMatrix: any = m.identity(m.create());
-  const mvpMatrix: any = m.identity(m.create());
+  const mMatrix: Float32Array = m.identity(m.create());
+  const vMatrix: Float32Array = m.identity(m.create());
+  const pMatrix: Float32Array = m.identity(m.create());
+  const tmpMatrix: Float32Array = m.identity(m.create());
+  const mvpMatrix: Float32Array = m.identity(m.create());
+  const invMatrix: Float32Array = m.identity(m.create());
 
   m.lookAt([0.0, 1.0, 3.0], [0, 0, 0], [0, 1, 0], vMatrix);
   m.perspective(90, canvas.width / canvas.height, 0.1, 100, pMatrix);
 
-  m.multiply(pMatrix, vMatrix, mvpMatrix);
-  m.multiply(mvpMatrix, mMatrix, mvpMatrix);
+  m.multiply(pMatrix, vMatrix, tmpMatrix);
 
-  const uniLocation: WebGLUniformLocation = <WebGLUniformLocation>gl.getUniformLocation(program, 'mvpMatrix');
-  gl.uniformMatrix4fv(uniLocation, false, mvpMatrix);
+  const lightDirection: number[] = [-0.5, 0.5, 0.5];
 
-  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  const uniLocations: WebGLUniformLocation[] = 
+    [
+      <WebGLUniformLocation>gl.getUniformLocation(program, 'mvpMatrix'),
+      <WebGLUniformLocation>gl.getUniformLocation(program, 'invMatrix'),
+      <WebGLUniformLocation>gl.getUniformLocation(program, 'lightDirection'),
+    ];
 
-  gl.flush();
-};
+
+  let count: number = 0;
+
+  const tick = (): void => {
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearDepth(1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT || gl.DEPTH_BUFFER_BIT);
+
+    count += 1;
+
+    const rad: number = (count % 360) * Math.PI / 180;
+
+    m.identity(mMatrix);
+    m.translate(mMatrix, [0.0, 0.0, -2.0], mMatrix);
+    m.rotate(mMatrix, rad, [1, 1, 0], mMatrix);
+
+    m.multiply(tmpMatrix, mMatrix, mvpMatrix);
+    m.inverse(mMatrix, invMatrix);
+    gl.uniformMatrix4fv(uniLocations[0], false, mvpMatrix);
+    gl.uniformMatrix4fv(uniLocations[1], false, invMatrix);
+    gl.uniform3fv(uniLocations[2], lightDirection);
+    gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
+
+    gl.flush();
+
+    requestAnimationFrame(tick);
+  };
+
+  tick();
+}
