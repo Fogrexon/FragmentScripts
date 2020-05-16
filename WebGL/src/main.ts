@@ -27,7 +27,7 @@ const createShader = (
   if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     return shader;
   }
-  throw new Error(`Cannot compile ${type} shader.`);
+  throw new Error(<string>gl.getShaderInfoLog(shader));
 };
 
 const createProgram = (
@@ -94,7 +94,7 @@ window.onload = ():void => {
   attLocations[1] = gl.getAttribLocation(program, 'normal');
   attLocations[2] = gl.getAttribLocation(program, 'color');
 
-  const torusObj: Array<number>[] = torus(100, 100, 1, 2);
+  const torusObj: Array<number>[] = torus(64, 64, 1, 2);
 
   const attStrides: number[] = [3, 3, 4];
   const triangle: number[] = torusObj[0];
@@ -135,7 +135,9 @@ window.onload = ():void => {
   m.multiply(pMatrix, vMatrix, tmpMatrix);
 
   const lightDirection: number[] = [-0.5, 0.5, 0.5];
+  const pointLightPosition: number[] = [0.0, 0.0, 0.0];
   const ambientColor: number[] = [0.1, 0.1, 0.1, 1.0];
+  const eyeDirection: number[] = [0.0, 0.0, 20.0];
 
   const uniLocations: WebGLUniformLocation[] = 
     [
@@ -143,6 +145,9 @@ window.onload = ():void => {
       <WebGLUniformLocation>gl.getUniformLocation(program, 'invMatrix'),
       <WebGLUniformLocation>gl.getUniformLocation(program, 'lightDirection'),
       <WebGLUniformLocation>gl.getUniformLocation(program, 'ambientColor'),
+      <WebGLUniformLocation>gl.getUniformLocation(program, 'eyeDireciton'),
+      <WebGLUniformLocation>gl.getUniformLocation(program, 'mMatrix'),
+      <WebGLUniformLocation>gl.getUniformLocation(program, 'lightPosition'),
     ];
 
 
@@ -160,13 +165,16 @@ window.onload = ():void => {
     m.identity(mMatrix);
     m.translate(mMatrix, [0.0, 0.0, -2.0], mMatrix);
     m.rotate(mMatrix, rad, [1, 1, 0], mMatrix);
-
     m.multiply(tmpMatrix, mMatrix, mvpMatrix);
     m.inverse(mMatrix, invMatrix);
+
     gl.uniformMatrix4fv(uniLocations[0], false, mvpMatrix);
     gl.uniformMatrix4fv(uniLocations[1], false, invMatrix);
     gl.uniform3fv(uniLocations[2], lightDirection);
-    gl.uniform4fv(uniLocations[3], ambientColor)
+    gl.uniform4fv(uniLocations[3], ambientColor);
+    gl.uniform3fv(uniLocations[4], eyeDirection);
+    gl.uniformMatrix4fv(uniLocations[5], false, mMatrix);
+    gl.uniform3fv(uniLocations[6], pointLightPosition);
     gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
 
     gl.flush();
