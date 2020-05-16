@@ -135,12 +135,14 @@ window.onload = ():void => {
   m.multiply(pMatrix, vMatrix, tmpMatrix);
 
   const lightDirection: number[] = [-0.5, 0.5, 0.5];
+  const ambientColor: number[] = [0.1, 0.1, 0.1, 1.0];
 
   const uniLocations: WebGLUniformLocation[] = 
     [
       <WebGLUniformLocation>gl.getUniformLocation(program, 'mvpMatrix'),
       <WebGLUniformLocation>gl.getUniformLocation(program, 'invMatrix'),
       <WebGLUniformLocation>gl.getUniformLocation(program, 'lightDirection'),
+      <WebGLUniformLocation>gl.getUniformLocation(program, 'ambientColor'),
     ];
 
 
@@ -164,6 +166,7 @@ window.onload = ():void => {
     gl.uniformMatrix4fv(uniLocations[0], false, mvpMatrix);
     gl.uniformMatrix4fv(uniLocations[1], false, invMatrix);
     gl.uniform3fv(uniLocations[2], lightDirection);
+    gl.uniform4fv(uniLocations[3], ambientColor)
     gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
 
     gl.flush();
