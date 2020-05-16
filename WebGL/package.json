@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/main.ts",
     "init": "eslint --init && tsc --init",
-    "build": "tsc src/main.ts",
+    "build": "parcel build ./public/index.html && http-server ./dist",
     "start": "parcel ./public/index.html"
   },
   "author": "",

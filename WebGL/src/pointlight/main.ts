@@ -1,5 +1,5 @@
-import MatIV from './utils/minMatrix';
-import torus from './utils/torus';
+import MatIV from '../utils/minMatrix';
+import torus from '../utils/torus';
 import shaders from './shader';
 
 
