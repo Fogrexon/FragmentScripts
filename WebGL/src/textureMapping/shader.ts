@@ -27,3 +27,5 @@ void main(void) {
   gl_FragColor = vColor * smpColor;
 }
 `;
+
+export { vertexShader, fragmentShader };

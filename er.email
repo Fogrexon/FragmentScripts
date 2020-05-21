@@ -1,0 +1,90 @@
+[33mcommit 6b2beb01271462fd59915e1d4551de5af6885c45[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+[36mgpg: Signature made 2020年05月21日 14時53分41秒    [m
+[36mgpg:                using RSA key C16C317726E297062BB01CE6D44EE038253EB905[m
+[36mgpg: Good signature from "fogrexon (This is nickname) <fogrexon@gmail.com>" [ultimate][m
+[36mgpg:                 aka "Hidetaka Katsuyama <fogrexon@gmail.com>" [ultimate][m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Thu May 21 14:53:40 2020 +0900
+
+    shader作成
+
+[33mcommit d83d5f060db013df3a3ca1268288dc3b23f99e30[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Sat May 16 14:05:33 2020 +0900
+
+    page わけ
+
+[33mcommit 2bd56c533ca31c463368d8e7b34dda3807ba2f3a[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Sat May 16 13:53:32 2020 +0900
+
+    point light(someting wrong)
+
+[33mcommit a86701e5f91f5d3898e4940ba44099f435dc08ec[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Sat May 16 09:50:10 2020 +0900
+
+    ambient light
+
+[33mcommit 6f80156b0d950eea720feab94987201bb99a0f9d[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Fri May 15 20:49:13 2020 +0900
+
+    gaming torus(Shaded)
+
+[33mcommit 941f9476cc201c8145ef50d6db5f674823fe6870[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Thu May 14 14:39:06 2020 +0900
+
+    gameing triangle
+
+[33mcommit 83893c84af9fbc8669e3c567d65b965a0e2f2c46[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Thu May 14 14:18:40 2020 +0900
+
+    triangle
+
+[33mcommit 4259aa44b9f0a918da490b6313f2e8bc2ed069f3[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Thu May 14 14:18:18 2020 +0900
+
+    setting added
+
+[33mcommit 391b59991012dd50d83361f5a341655a2826d701[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Wed May 13 00:34:17 2020 +0900
+
+    remove discordbot
+
+[33mcommit ff0b1c501e7dab34b30be6021629dcd68bc4f3e8[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Wed May 13 00:30:14 2020 +0900
+
+    built file move
+
+[33mcommit cda6ce6357986ab9059de0237e1a8533f59cdc0e[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Wed May 13 00:19:31 2020 +0900
+
+    settings
+
+[33mcommit a2fab59ed9da9dcbcec6ae80d3f91ac754cdf396[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Tue May 12 23:40:44 2020 +0900
+
+    webgl ready
+
+[33mcommit b2762c87b12dd046ec4d46eb6f7bf925fe2a91e1[m
+Author: Fogrexon <katsu15873@gmail.com>
+Date:   Tue May 12 23:22:15 2020 +0900
+
+    fragment added
+
+[33mcommit 6b199ebbf611738626beadb12eb3730f6ca39207[m
+[41mgpg: Signature made 2020年05月12日 23時13分17秒    [m
+[41mgpg:                using RSA key 4AEE18F83AFDEB23[m
+[41mgpg: Can't check signature: No public key[m
+Author: FogRexOn <50396924+Fogrexon@users.noreply.github.com>
+Date:   Tue May 12 23:13:16 2020 +0900
+
+    Initial commit
