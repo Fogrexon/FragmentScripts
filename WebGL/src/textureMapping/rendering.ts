@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-operators */
 import { vertexShader as vertexShaderSource, fragmentShader as fragmentShaderSource } from './shader';
 import MatIV from '../utils/minMatrix';
+import fogrexSource from './fogrex_icon.jpg';
 
 const createShader = (
   gl: WebGLRenderingContext,
@@ -180,7 +181,7 @@ const rendering = () => {
     image.src = source;
   };
 
-  createTexture('./fogrex_icon.jpg');
+  createTexture(fogrexSource);
 
   let count = 0;
 
@@ -211,4 +212,4 @@ const rendering = () => {
   tick();
 };
 
-export default { rendering };
+export default rendering;

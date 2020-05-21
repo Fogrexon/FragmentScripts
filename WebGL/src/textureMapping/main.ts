@@ -1,3 +1,5 @@
-import { rendering } from './rendering';
+import rendering from './rendering';
 
-window.addEventListener('load', rendering);
+window.addEventListener('load', () => {
+  rendering();
+});
