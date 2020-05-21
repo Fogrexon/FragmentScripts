@@ -30,7 +30,6 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "import/extensions": "off",
-        "no-mixed-operator": "disable"
+        "import/extensions": "off"
     }
 }

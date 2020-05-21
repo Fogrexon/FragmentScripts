@@ -1,0 +1,5 @@
+const rendering = () => {
+  
+}
+
+export { rendering }
